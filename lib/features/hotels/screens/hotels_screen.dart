@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import '../data/history_provider.dart';
+import 'package:get_it/get_it.dart';
+import '../data/booking_service.dart';
 import '../models/hotel.dart';
 import '../models/booking.dart';
 import '../widgets/hotel_list.dart';
@@ -66,7 +67,8 @@ class _HotelsScreenState extends State<HotelsScreen> {
     );
 
     if (booking != null) {
-      HistoryProvider.of(context).addBooking(booking);
+      final service = GetIt.I<BookingService>();
+      service.addBooking(booking);
     }
   }
 

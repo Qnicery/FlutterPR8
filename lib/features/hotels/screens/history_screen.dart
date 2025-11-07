@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import '../data/history_provider.dart';
+import 'package:get_it/get_it.dart';
+
+import '../data/booking_service.dart';
 
 
 class HistoryScreen extends StatelessWidget {
@@ -12,7 +14,8 @@ class HistoryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final history = HistoryProvider.of(context).history;
+    final service = GetIt.I<BookingService>();
+    final history = service.history;
     return Scaffold(
       appBar: AppBar(title: const Text('История бронирования', style: TextStyle(fontWeight: FontWeight.bold)), centerTitle: true),
       body: history.isEmpty
