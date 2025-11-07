@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import '../data/history_provider.dart';
 import '../models/hotel.dart';
 import '../models/booking.dart';
 import '../widgets/hotel_list.dart';
 
 
 class HotelsScreen extends StatefulWidget {
-  final List<Booking> history;
 
-  const HotelsScreen({super.key, required this.history});
+
+  const HotelsScreen({super.key});
 
   @override
   State<HotelsScreen> createState() => _HotelsScreenState();
@@ -65,9 +66,7 @@ class _HotelsScreenState extends State<HotelsScreen> {
     );
 
     if (booking != null) {
-      setState(() {
-        widget.history.add(booking);
-      });
+      HistoryProvider.of(context).addBooking(booking);
     }
   }
 
@@ -111,10 +110,10 @@ class _HotelsScreenState extends State<HotelsScreen> {
           onTap: (i) {
             switch (i) {
               case 1:
-                context.go('/history', extra: widget.history);
+                context.go('/history');
                 break;
               case 2:
-                context.go('/profile', extra: widget.history);
+                context.go('/profile');
                 break;
             }
           },

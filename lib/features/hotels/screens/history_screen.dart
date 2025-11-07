@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import '../models/booking.dart';
+import '../data/history_provider.dart';
+
 
 class HistoryScreen extends StatelessWidget {
-  final List<Booking> history;
 
-  const HistoryScreen({super.key, required this.history});
+
+  const HistoryScreen({super.key});
 
 
 
   @override
   Widget build(BuildContext context) {
+    final history = HistoryProvider.of(context).history;
     return Scaffold(
       appBar: AppBar(title: const Text('История бронирования', style: TextStyle(fontWeight: FontWeight.bold)), centerTitle: true),
       body: history.isEmpty
@@ -57,10 +59,10 @@ class HistoryScreen extends StatelessWidget {
           onTap: (i) {
             switch (i) {
               case 0:
-                context.go('/hotels', extra: history);
+                context.go('/hotels');
                 break;
               case 2:
-                context.go('/profile', extra: history);
+                context.go('/profile');
                 break;
             }
           },

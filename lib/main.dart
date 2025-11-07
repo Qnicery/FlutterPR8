@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '/features/hotels/screens/hotels_screen.dart';
 
+import 'features/hotels/data/history_provider.dart';
 import 'features/hotels/models/booking.dart';
 import 'features/hotels/models/hotel.dart';
 import 'features/hotels/screens/history_screen.dart';
@@ -13,62 +14,70 @@ void main() {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final GoRouter _router = GoRouter(
-      initialLocation: '/hotels',
-      routes: [
-        GoRoute(
-          name: 'hotels',
-          path: '/hotels',
-          builder: (context, state) {
-            final history = state.extra as List<Booking>? ?? [];
-            return HotelsScreen(history: history);
-          },
-          routes: [
-            GoRoute(
-              name: 'hotelDetail',
-              path: 'detail',
-              builder: (context, state) {
-                final hotel = state.extra as Hotel;
-                return HotelDetailScreen(hotel: hotel);
-              },
-            ),
-          ],
-        ),
-        GoRoute(
-          name: 'history',
-          path: '/history',
-          builder: (context, state) {
-            final history = state.extra as List<Booking>? ?? [];
-            return HistoryScreen(history: history);
-          },
-        ),
-        GoRoute(
-          name: 'profile',
-          path: '/profile',
-          builder: (context, state) {
-            final history = state.extra as List<Booking>? ?? [];
-            return ProfileScreen(history: history);
-          },
-          routes: [
-            GoRoute(
-              name: 'settings',
-              path: 'settings',
-              builder: (context, state) => const SettingsScreen(),
-            ),
-          ],
-        ),
-      ],
-    );
+  State<MyApp> createState() => _MyAppState();
+}
 
-    return MaterialApp.router(
-      routerConfig: _router,
-      title: 'Бронирование отелей',
-      theme: ThemeData(primarySwatch: Colors.blue),
+class _MyAppState extends State<MyApp> {
+  final List<Booking> _history = [];
+
+  void _addBooking(Booking booking) {
+    setState(() {
+      _history.add(booking);
+    });
+  }
+  final GoRouter _router = GoRouter(
+    initialLocation: '/hotels',
+    routes: [
+      GoRoute(
+        name: 'hotels',
+        path: '/hotels',
+        builder: (context, state) => const HotelsScreen(),
+        routes: [
+          GoRoute(
+            name: 'hotelDetail',
+            path: 'detail',
+            builder: (context, state) {
+              final hotel = state.extra as Hotel;
+              return HotelDetailScreen(hotel: hotel);
+            },
+          ),
+        ],
+      ),
+      GoRoute(
+        name: 'history',
+        path: '/history',
+        builder: (context, state)=> const HistoryScreen(),
+      ),
+      GoRoute(
+        name: 'profile',
+        path: '/profile',
+        builder: (context, state) => const ProfileScreen(),
+        routes: [
+          GoRoute(
+            name: 'settings',
+            path: 'settings',
+            builder: (context, state) => const SettingsScreen(),
+          ),
+        ],
+      ),
+    ],
+  );
+  @override
+  Widget build(BuildContext context) {
+
+
+    return HistoryProvider(
+      history: _history,
+      addBooking: _addBooking,
+      child: MaterialApp.router(
+        title: 'Бронирование отелей',
+        theme: ThemeData(primarySwatch: Colors.blue),
+        routerConfig: _router,
+      ),
     );
   }
 }

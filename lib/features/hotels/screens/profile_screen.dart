@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import '../models/booking.dart';
+
 
 
 class ProfileScreen extends StatefulWidget {
-  final List<Booking> history;
-  const ProfileScreen({super.key, required this.history});
+  const ProfileScreen({super.key});
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
@@ -62,10 +61,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
           onTap: (i) {
             switch (i) {
               case 0:
-                context.go('/hotels', extra: widget.history);
+                context.go('/hotels');
                 break;
               case 1:
-                context.go('/history', extra: widget.history);
+                context.go('/history');
                 break;
             }
           },
